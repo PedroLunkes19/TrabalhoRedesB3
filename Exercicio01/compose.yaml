@@ -12,6 +12,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - backend
 
   backend:
     build: ./backend
@@ -24,6 +26,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - frontend
+      - backend
 
   frontend:
     build: ./frontend
@@ -31,5 +36,11 @@ services:
       - "8080:80"
     depends_on:
       - backend
+    networks:
+      - frontend
 volumes:
   db_data:
+
+networks:
+  frontend:
+  backend:
